@@ -1,0 +1,39 @@
+<!DOCTYPE HTML>
+
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>Online Shop</title>
+    <meta charset="utf-8" />
+    <style>
+@import url(https://fonts.googleapis.com/css?family=Roboto:300);
+
+.login-page {
+	width: 360px;
+	padding: 8% 0 0;
+	margin: auto;
+}
+
+body {
+	background: #F0FFFF; /* fallback for old browsers */
+	background: -webkit-linear-gradient(right, #F0FFFF, #8DC26F);
+	background: -moz-linear-gradient(right, #F0FFFF, #8DC26F);
+	background: -o-linear-gradient(right, #F0FFFF, #8DC26F);
+	background: linear-gradient(to left, #F0FFFF, #8DC26F);
+	font-family: "Roboto", sans-serif;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+</style>
+</head>
+<body>
+<div class="login-page">
+    <h1 style="text-align: center;">Success!</h1>
+    <h2 style="text-align: center;"
+        th:text="'User ' + ${user.username}"></h2>
+    <h2 style="text-align: center;" th:text="'has successfully logged in.'"></h2>
+</div>
+</body>
+
+
+
+</html>
