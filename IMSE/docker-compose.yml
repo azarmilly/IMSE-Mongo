@@ -13,6 +13,14 @@ services:
             - MYSQL_DATABASE=online_shop
             - MYSQL_USER=azar
             - MYSQL_PASSWORD=4321
+    mongo:
+        image: mongo
+        ports:
+            - "27017:27017"
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: azar
+            MONGO_INITDB_ROOT_PASSWORD: 4321
+            MONGO_INITDB_DATABASE: online_shop
     online_shop:
         container_name: online_shop
         image: online_shop:latest
