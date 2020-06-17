@@ -21,13 +21,6 @@ public class UserController {
         return "login";
     }
 
-    @GetMapping("/register")
-    public String register(Model model) {
-        //userService.addUser(user);
-        model.addAttribute("user", new Users());
-        return "register";
-    }
-
     @PostMapping("/register")
     public String register(@ModelAttribute Users user, Model model) {
         userService.addUser(user);
