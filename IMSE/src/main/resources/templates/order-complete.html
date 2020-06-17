@@ -25,30 +25,8 @@
     </div>
 
     <div class="col-sm-10">
-        <h4>Your Basket</h4>
-
-        <div th:each="product: ${products}" class="shop-item">
-            <p>
-                <span th:text="${product.description}"></span>
-            </p>
-            <p>
-                <span>Rating: </span>
-                <span th:text="${product.rating}"></span>
-            </p>
-            <p>
-                <span>Availability: </span>
-                <span th:text="${product.availability}"></span>
-            </p>
-            <p>
-                <span>Manufacturer: </span>
-                <span th:text="${product.manufacturer.name}"></span>
-            </p>
-        </div>
-
-
-        <div class="col-sm-10">
-            <a th:href="${'/checkout?shoppingListId=' + shoppingListId}"><button>Checkout</button></a>
-        </div>
+        <p>Thank you for your purchase!</p>
+        <p th:text="${'Your order id: ' + orderId}">t</p>
     </div>
 
 </div>

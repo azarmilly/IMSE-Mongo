@@ -1,6 +1,8 @@
 package OnlineShop.online_shop.services;
 
-import OnlineShop.online_shop.model.Orders;
+import OnlineShop.online_shop.model.mongo.Orders;
+import OnlineShop.online_shop.model.mongo.ShoppingList;
+import OnlineShop.online_shop.model.mongo.Users;
 
 import java.util.List;
 
@@ -9,6 +11,6 @@ public interface OrdersService {
 
     List<Orders> getAllOrders ();
 
-    void addOrders (Orders orders);
+    int addOrders(Users user, ShoppingList orders);
 
 }

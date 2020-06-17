@@ -13,6 +13,8 @@ public interface UserService {
     void addUser(Users user);
     void addOrder(int userId, Orders orders);
     ShoppingList addToShoppingList(Users user, int productId);
+    ShoppingList getActiveShoppingList(Users user);
+    void deactivateShoppingLists(Users user);
     //User getUserByOrder (Orders orders);
 
 

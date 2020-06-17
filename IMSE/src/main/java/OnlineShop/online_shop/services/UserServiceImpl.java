@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -69,14 +70,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public ShoppingList addToShoppingList(Users user, int productId) {
         Product product = productService.getProductById(productId);
 
-        Optional<ShoppingList> activeShoppingListOptional = user.getShoppingList()
-                .parallelStream()
-                .filter(ShoppingList::isActive)
-                .findFirst();
+        ShoppingList activeShoppingList = getActiveShoppingList(user);
 
         ShoppingList shoppingList;
-        if(activeShoppingListOptional.isPresent()) {
-            shoppingList = activeShoppingListOptional.get();
+        if(activeShoppingList != null) {
+            shoppingList = activeShoppingList;
             List<Product> products = shoppingList.getProducts();
             products.add(product);
             shoppingList.setProducts(products);
@@ -84,7 +82,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         }
         else {
             shoppingList = new ShoppingList();
-            shoppingList.setProducts(Collections.singletonList(product));
+            ArrayList<Product> products = new ArrayList<>();
+            products.add(product);
+            shoppingList.setProducts(products);
             shoppingList.setItemCount(1);
             shoppingList.setActive(true);
             shoppingList.setId(mongoSequenceGenerator.generateSequence(ShoppingList.SEQUENCE_NAME));
@@ -94,5 +94,22 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 .add(shoppingList);
         userRepository.save(user);
         return shoppingList;
+    }
+
+    @Override
+    public ShoppingList getActiveShoppingList(Users user) {
+        return user.getShoppingList()
+                .parallelStream()
+                .filter(ShoppingList::isActive)
+                .findFirst()
+                .orElse(null);
+    }
+
+    @Override
+    public void deactivateShoppingLists(Users user) {
+        user.getShoppingList()
+                .parallelStream()
+                .forEach(sp -> sp.setActive(false));
+        userRepository.save(user);
     }
 }
