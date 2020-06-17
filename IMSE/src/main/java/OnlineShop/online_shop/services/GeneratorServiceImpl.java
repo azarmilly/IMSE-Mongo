@@ -1,10 +1,13 @@
 package OnlineShop.online_shop.services;
 
 import OnlineShop.online_shop.model.*;
+import OnlineShop.online_shop.repositories.ShoppingListRepository;
 import com.github.javafaker.Faker;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -21,9 +24,26 @@ public class GeneratorServiceImpl {
 
     @Autowired ProductService productService;
     @Autowired OrdersService ordersService;
+    @Autowired
+    private ShoppingListRepository shoppingListRepository;
+
+    @PostConstruct
+    private void init(){
+        if(userService.getAllUsers().size() == 0) {
+            System.out.println("Users size is 0, starting Mysql data generation...");
+            generateUserData();
+            generateManufacturerData();
+            generateProductData();
+            generateShoppingListData();
+            generateOrdersData();
+            System.out.println("Data generation is done!");
+        }
+        else {
+            System.out.println("No need to generate data for Mysql");
+        }
+    }
 
     public void generateUserData() {
-        List<Users> users = new ArrayList<>();
         Users user;
         Faker faker = new Faker();
         for (int i = 0; i < 10; i++) {
@@ -36,7 +56,6 @@ public class GeneratorServiceImpl {
             user.setEmail(user.getFirstName() + "@gmail.com");
             user.setAddress(faker.address().streetAddress());
             userService.addUser(user);
-            users.add(user);
         }
     }
 
@@ -76,31 +95,30 @@ public class GeneratorServiceImpl {
         }
     }
 
-//    public void generateShoppingListData() {
-//        ShoppingList shoppingList;
-//        ShoppingListRepository shoppingListRepository = SpringContextBridge.services().getShoppingListRepository();
-//
-//        for(int i=0; i<50; i++) {
-//            shoppingList = new ShoppingList();
-//            Random rand = new Random();
-//            shoppingList.setItemCount(rand.nextInt(7));
-//            shoppingList.setName("MyShoppingList");
-//
-//            //Sets random foreign key
-//            int idFrom = users.get(0).getId();
-//            int idTo = users.get(users.size()-1).getId();
-//            User user = new User();
-//            user.setId(ThreadLocalRandom.current().nextInt(idFrom,idTo));
-//            shoppingList.setUser(user);
-//
-//            shoppingListRepository.save(shoppingList);
-//        }
-//    }
+    public void generateShoppingListData() {
+        List<Users> users = userService.getAllUsers();
+        ShoppingList shoppingList;
+        for(int i=0; i<50; i++) {
+            shoppingList = new ShoppingList();
+            Random rand = new Random();
+            shoppingList.setItemCount(rand.nextInt(7));
+            shoppingList.setName("MyShoppingList");
+
+            //Sets random foreign key
+            int idFrom = users.get(0).getId();
+            int idTo = users.get(users.size()-1).getId();
+            Users user = new Users();
+            user.setId(ThreadLocalRandom.current().nextInt(idFrom,idTo));
+            shoppingList.setUser(user);
+
+            shoppingListRepository.save(shoppingList);
+        }
+    }
 
     public void generateOrdersData() {
         Orders orders;
         List<Users> users = userService.getAllUsers();
-        //OrdersRepository ordersRepository = SpringContextBridge.services().getOrdersRepository();
+
         List<String> statusList = new ArrayList<>();
         Date fromDate = new Date(115, 1, 1);
         Date toDate = new Date();

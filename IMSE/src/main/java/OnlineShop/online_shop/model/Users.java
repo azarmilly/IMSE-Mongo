@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.util.Collection;
 
 @Entity // This tells Hibernate to make a table out of this class
-@Table(name = "user")
+@Table
 public class Users implements UserDetails {
     @Id
     @GeneratedValue(strategy=GenerationType.SEQUENCE)
