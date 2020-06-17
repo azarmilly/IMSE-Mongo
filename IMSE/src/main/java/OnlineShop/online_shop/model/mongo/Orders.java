@@ -15,7 +15,7 @@ public class Orders {
     public static final String SEQUENCE_NAME = "orders_sequence";
 
     @Id
-    private Integer orderId;
+    private Integer id;
 
     private double price;
 
@@ -33,12 +33,12 @@ public class Orders {
     @DBRef
     private Users user;
 
-    public Integer getOrderId() {
-        return orderId;
+    public Integer getId() {
+        return id;
     }
 
-    public void setOrderId(Integer orderId) {
-        this.orderId = orderId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public double getPrice() {

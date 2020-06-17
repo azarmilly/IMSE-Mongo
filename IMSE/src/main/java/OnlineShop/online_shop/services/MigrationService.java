@@ -116,6 +116,7 @@ public class MigrationService implements CommandLineRunner {
             mongoUser.setPhoneNumber(user.getPhoneNumber());
             mongoUser.setEmail(user.getEmail());
             mongoUser.setAddress(user.getAddress());
+            mongoUser.setEnabled(user.isEnabled());
 
             List<ShoppingList> userShoppingLists = shoppingLists.parallelStream()
                     .filter(sl -> sl.getUser().getId().equals(user.getId()))
@@ -124,7 +125,7 @@ public class MigrationService implements CommandLineRunner {
             List<OnlineShop.online_shop.model.mongo.ShoppingList> mongoShoppingLists = new ArrayList<>();
             for (ShoppingList shoppingList : userShoppingLists) {
                 OnlineShop.online_shop.model.mongo.ShoppingList mongoShoppingList = new OnlineShop.online_shop.model.mongo.ShoppingList();
-                mongoShoppingList.setShoppingListId(shoppingList.getShoppingListId());
+                mongoShoppingList.setId(shoppingList.getShoppingListId());
                 mongoShoppingList.setItemCount(shoppingList.getItemCount());
                 mongoShoppingList.setName(shoppingList.getName());
 
@@ -163,7 +164,7 @@ public class MigrationService implements CommandLineRunner {
             OnlineShop.online_shop.model.mongo.Orders mongoOrder = new OnlineShop.online_shop.model.mongo.Orders();
             mongoOrder.setAddress(mysqlOrder.getAddress());
             mongoOrder.setDate(mysqlOrder.getDate());
-            mongoOrder.setOrderId(mysqlOrder.getOrderId());
+            mongoOrder.setId(mysqlOrder.getOrderId());
             mongoOrder.setPrice(mysqlOrder.getPrice());
 
             List<Integer> mysqlOrderProducts = boughtProducts.parallelStream()

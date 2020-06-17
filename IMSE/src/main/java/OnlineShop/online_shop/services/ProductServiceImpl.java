@@ -1,7 +1,8 @@
 package OnlineShop.online_shop.services;
 
-import OnlineShop.online_shop.model.Product;
+import OnlineShop.online_shop.model.mongo.Product;
 import OnlineShop.online_shop.repositories.ProductRepository;
+import OnlineShop.online_shop.repositories.mongo.ProductMongoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,11 +10,11 @@ import java.util.List;
 @Service("productService")
 public class ProductServiceImpl implements ProductService {
     @Autowired
-    ProductRepository productRepository;
+    ProductMongoRepository productRepository;
 
     @Override
     public Product getProductById(int productId) {
-        return productRepository.findByProductId(productId);
+        return productRepository.findById(productId);
     }
 
     @Override

@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
 // CRUD refers Create, Read, Update, Delete
 @Repository("OrdersMongoRepository")
 public interface OrdersMongoRepository extends MongoRepository<Orders, Integer> {
-    Orders findByOrderId (int ordersId) ;
+    Orders findById (int ordersId) ;
 }

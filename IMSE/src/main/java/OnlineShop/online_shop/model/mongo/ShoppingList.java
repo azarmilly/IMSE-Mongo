@@ -11,7 +11,7 @@ public class ShoppingList {
     public static final String SEQUENCE_NAME = "shopping_list_sequence";
 
     @Id
-    private Integer shoppingListId;
+    private Integer id;
 
     private String name;
 
@@ -20,12 +20,14 @@ public class ShoppingList {
     @DBRef
     private List<Product> products;
 
-    public Integer getShoppingListId() {
-        return shoppingListId;
+    private boolean active;
+
+    public Integer getId() {
+        return id;
     }
 
-    public void setShoppingListId(Integer shoppingListId) {
-        this.shoppingListId = shoppingListId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -50,5 +52,13 @@ public class ShoppingList {
 
     public void setProducts(List<Product> products) {
         this.products = products;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }

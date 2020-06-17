@@ -1,30 +1,39 @@
 package OnlineShop.online_shop.services;
 
-import OnlineShop.online_shop.model.Orders;
-import OnlineShop.online_shop.model.Users;
-import OnlineShop.online_shop.repositories.OrdersRepository;
-import OnlineShop.online_shop.repositories.UserRepository;
+import OnlineShop.online_shop.model.mongo.Orders;
+import OnlineShop.online_shop.model.mongo.Product;
+import OnlineShop.online_shop.model.mongo.ShoppingList;
+import OnlineShop.online_shop.model.mongo.Users;
+import OnlineShop.online_shop.repositories.mongo.OrdersMongoRepository;
+import OnlineShop.online_shop.repositories.mongo.UserMongoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Service("userService2")
 public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Autowired
-    private UserRepository userRepository;
+    private UserMongoRepository userRepository;
 
     @Autowired
-    private OrdersRepository ordersRepository;
+    private OrdersMongoRepository ordersRepository;
+
+    @Autowired
+    private ProductService productService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private MongoSequenceGenerator mongoSequenceGenerator;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -56,9 +65,34 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     }
 
-//    @Override
-//    public User getUserByOrder(Orders orders) {
-//        return userRepository.findOrders(orders);
-//    }
+    @Override
+    public ShoppingList addToShoppingList(Users user, int productId) {
+        Product product = productService.getProductById(productId);
 
+        Optional<ShoppingList> activeShoppingListOptional = user.getShoppingList()
+                .parallelStream()
+                .filter(ShoppingList::isActive)
+                .findFirst();
+
+        ShoppingList shoppingList;
+        if(activeShoppingListOptional.isPresent()) {
+            shoppingList = activeShoppingListOptional.get();
+            List<Product> products = shoppingList.getProducts();
+            products.add(product);
+            shoppingList.setProducts(products);
+            shoppingList.setItemCount(shoppingList.getItemCount() + 1);
+        }
+        else {
+            shoppingList = new ShoppingList();
+            shoppingList.setProducts(Collections.singletonList(product));
+            shoppingList.setItemCount(1);
+            shoppingList.setActive(true);
+            shoppingList.setId(mongoSequenceGenerator.generateSequence(ShoppingList.SEQUENCE_NAME));
+        }
+
+        user.getShoppingList()
+                .add(shoppingList);
+        userRepository.save(user);
+        return shoppingList;
+    }
 }

@@ -11,7 +11,7 @@ public class Product {
     public static final String SEQUENCE_NAME = "products_sequence";
 
     @Id
-    private Integer productId;
+    private Integer id;
 
     private double price;
 
@@ -24,12 +24,13 @@ public class Product {
 
     private Manufacturer manufacturer;
 
+
     public Integer getId() {
-        return productId;
+        return id;
     }
 
     public void setId(Integer id) {
-        this.productId = id;
+        this.id = id;
     }
 
     public double getPrice() {
