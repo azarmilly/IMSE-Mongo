@@ -51,7 +51,7 @@ public class GeneratorServiceImpl {
             user.setFirstName(faker.name().firstName());
             user.setSecondName(faker.name().lastName());
             user.setUsername(faker.name().username());
-            user.setPassword(faker.name().username());
+            user.setPassword("1");
             user.setPhoneNumber(faker.phoneNumber().phoneNumber());
             user.setEmail(user.getFirstName() + "@gmail.com");
             user.setAddress(faker.address().streetAddress());
