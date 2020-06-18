@@ -1,10 +1,10 @@
 package OnlineShop.online_shop.services;
 
-import OnlineShop.online_shop.model.mongo.Orders;
-import OnlineShop.online_shop.model.mongo.Product;
-import OnlineShop.online_shop.model.mongo.ShoppingList;
-import OnlineShop.online_shop.model.mongo.Users;
-import OnlineShop.online_shop.repositories.mongo.OrdersMongoRepository;
+import OnlineShop.online_shop.model.Orders;
+import OnlineShop.online_shop.model.Product;
+import OnlineShop.online_shop.model.ShoppingList;
+import OnlineShop.online_shop.model.Users;
+import OnlineShop.online_shop.repositories.OrdersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,13 +14,11 @@ import java.util.List;
 @Service("ordersService")
 public class OrdersServiceImpl implements OrdersService {
     @Autowired
-    OrdersMongoRepository ordersRepository;
-    @Autowired
-    MongoSequenceGenerator mongoSequenceGenerator;
+    OrdersRepository ordersRepository;
 
     @Override
     public Orders getOrderById(int ordersId) {
-        return ordersRepository.findById(ordersId);
+        return ordersRepository.findById(ordersId).get();
     }
 
     @Override
@@ -34,12 +32,17 @@ public class OrdersServiceImpl implements OrdersService {
         order.setUser(user);
         order.setProducts(shoppingList.getProducts());
         order.setDate(new Date());
-        order.setId(mongoSequenceGenerator.generateSequence(Orders.SEQUENCE_NAME));
         order.setPrice(shoppingList.getProducts()
                         .parallelStream()
                         .mapToDouble(Product::getPrice)
                         .sum());
         ordersRepository.save(order);
-        return order.getId();
+        return order.getOrderId();
+    }
+
+    @Override
+    public int addOrder(Orders order) {
+        ordersRepository.save(order);
+        return order.getOrderId();
     }
 }

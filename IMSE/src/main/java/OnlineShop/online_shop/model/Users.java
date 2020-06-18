@@ -1,10 +1,12 @@
 package OnlineShop.online_shop.model;
 
+import org.hibernate.annotations.Fetch;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.List;
 
 @Entity // This tells Hibernate to make a table out of this class
 @Table
@@ -20,6 +22,9 @@ public class Users implements UserDetails {
     private String phoneNumber;
     private String email;
     private boolean enabled;
+
+    @OneToMany(mappedBy = "user")
+    private List<ShoppingList> shoppingList;
 
     public Users() {}
     public Users(String firstName, String secondName){
@@ -117,5 +122,13 @@ public class Users implements UserDetails {
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+
+    public List<ShoppingList> getShoppingList() {
+        return shoppingList;
+    }
+
+    public void setShoppingList(List<ShoppingList> shoppingList) {
+        this.shoppingList = shoppingList;
     }
 }

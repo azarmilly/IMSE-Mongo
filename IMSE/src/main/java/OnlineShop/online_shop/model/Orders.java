@@ -2,6 +2,7 @@ package OnlineShop.online_shop.model;
 
 
 import java.util.Date;
+import java.util.List;
 import javax.persistence.*;
 
 @Entity // This tells Hibernate to make a table out of this class
@@ -22,6 +23,14 @@ public class Orders {
 
     @ManyToOne
     private Users user;
+
+
+    @ManyToMany
+    @JoinTable(
+            name = "bought_product",
+            joinColumns = @JoinColumn(name = "order_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id"))
+    private List<Product> products;
 
     public Integer getOrderId() {
         return orderId;
@@ -69,5 +78,13 @@ public class Orders {
 
     public void setUser(Users user) {
         this.user = user;
+    }
+
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
     }
 }

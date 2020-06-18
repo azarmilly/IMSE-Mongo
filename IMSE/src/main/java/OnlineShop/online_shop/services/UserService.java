@@ -1,8 +1,8 @@
 package OnlineShop.online_shop.services;
 
-import OnlineShop.online_shop.model.mongo.Orders;
-import OnlineShop.online_shop.model.mongo.ShoppingList;
-import OnlineShop.online_shop.model.mongo.Users;
+import OnlineShop.online_shop.model.Orders;
+import OnlineShop.online_shop.model.ShoppingList;
+import OnlineShop.online_shop.model.Users;
 
 import java.util.List;
 

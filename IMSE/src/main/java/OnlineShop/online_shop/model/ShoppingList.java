@@ -1,6 +1,7 @@
 package OnlineShop.online_shop.model;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity // This tells Hibernate to make a table out of this class
 public class ShoppingList {
@@ -15,6 +16,15 @@ public class ShoppingList {
 
     @ManyToOne
     private Users user;
+
+    @ManyToMany
+    @JoinTable(
+            name = "list_product",
+            joinColumns = @JoinColumn(name = "shpping_list_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id"))
+    private List<Product> products;
+
+    private boolean active;
 
     public Integer getShoppingListId() {
         return shoppingListId;
@@ -46,5 +56,21 @@ public class ShoppingList {
 
     public void setUser(Users user) {
         this.user = user;
+    }
+
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }

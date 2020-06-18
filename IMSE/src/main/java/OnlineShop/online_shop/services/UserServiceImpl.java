@@ -1,12 +1,15 @@
 package OnlineShop.online_shop.services;
 
-import OnlineShop.online_shop.model.mongo.Orders;
-import OnlineShop.online_shop.model.mongo.Product;
-import OnlineShop.online_shop.model.mongo.ShoppingList;
-import OnlineShop.online_shop.model.mongo.Users;
-import OnlineShop.online_shop.repositories.mongo.OrdersMongoRepository;
-import OnlineShop.online_shop.repositories.mongo.UserMongoRepository;
+import OnlineShop.online_shop.model.Orders;
+import OnlineShop.online_shop.model.Product;
+import OnlineShop.online_shop.model.ShoppingList;
+import OnlineShop.online_shop.model.Users;
+import OnlineShop.online_shop.repositories.OrdersRepository;
+import OnlineShop.online_shop.repositories.ShoppingListRepository;
+import OnlineShop.online_shop.repositories.UserRepository;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -22,10 +25,10 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Autowired
-    private UserMongoRepository userRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    private OrdersMongoRepository ordersRepository;
+    private OrdersRepository ordersRepository;
 
     @Autowired
     private ProductService productService;
@@ -34,7 +37,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    private MongoSequenceGenerator mongoSequenceGenerator;
+    private ShoppingListRepository shoppingListRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -86,10 +89,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             products.add(product);
             shoppingList.setProducts(products);
             shoppingList.setItemCount(1);
+            shoppingList.setUser(user);
             shoppingList.setActive(true);
-            shoppingList.setId(mongoSequenceGenerator.generateSequence(ShoppingList.SEQUENCE_NAME));
         }
 
+        shoppingListRepository.save(shoppingList);
         user.getShoppingList()
                 .add(shoppingList);
         userRepository.save(user);

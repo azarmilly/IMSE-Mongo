@@ -1,6 +1,6 @@
 package OnlineShop.online_shop.services;
 
-import OnlineShop.online_shop.model.mongo.Product;
+import OnlineShop.online_shop.model.Product;
 
 import java.util.List;
 

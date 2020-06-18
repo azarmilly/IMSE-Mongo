@@ -1,8 +1,8 @@
 package OnlineShop.online_shop.Controller;
 
-import OnlineShop.online_shop.model.mongo.Product;
-import OnlineShop.online_shop.model.mongo.ShoppingList;
-import OnlineShop.online_shop.model.mongo.Users;
+import OnlineShop.online_shop.model.Product;
+import OnlineShop.online_shop.model.ShoppingList;
+import OnlineShop.online_shop.model.Users;
 import OnlineShop.online_shop.services.OrdersService;
 import OnlineShop.online_shop.services.ProductService;
 import OnlineShop.online_shop.services.UserService;
@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 public class ShopController {
@@ -47,7 +46,7 @@ public class ShopController {
 
         model.addAttribute("user", user);
         model.addAttribute("products", shoppingList.getProducts());
-        model.addAttribute("shoppingListId", shoppingList.getId());
+        model.addAttribute("shoppingListId", shoppingList.getShoppingListId());
         return "basket";
     }
 
@@ -60,7 +59,7 @@ public class ShopController {
         List<Product> listProducts = new ArrayList<>();
         if(activeShoppingList != null){
             listProducts = activeShoppingList.getProducts();
-            model.addAttribute("shoppingListId", activeShoppingList.getId());
+            model.addAttribute("shoppingListId", activeShoppingList.getShoppingListId());
         }
 
         model.addAttribute("user", user);
@@ -75,11 +74,7 @@ public class ShopController {
                               int shoppingListId){
         Users user = (Users) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
 
-        ShoppingList shoppingList = user.getShoppingList()
-                .parallelStream()
-                .filter(sp -> sp.getId().equals(shoppingListId))
-                .findFirst().get();
-
+        ShoppingList shoppingList = userService.getActiveShoppingList(user);
         int orderId = ordersService.addOrders(user, shoppingList);
         userService.deactivateShoppingLists(user);
 

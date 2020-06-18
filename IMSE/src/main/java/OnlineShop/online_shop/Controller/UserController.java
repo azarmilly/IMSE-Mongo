@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import OnlineShop.online_shop.model.mongo.Users;
+import OnlineShop.online_shop.model.Users;
 import OnlineShop.online_shop.services.*;
 
 @Controller
