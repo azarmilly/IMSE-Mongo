@@ -11,7 +11,7 @@ ADD src /src
 ADD pom.xml /
 ADD entrypoint.sh /
 
-RUN export http_proxy= && export https_proxy= && apt update && apt install -y maven
+RUN chmod +x /entrypoint.sh && export http_proxy= && https_proxy= && apt update && apt install -y maven
 
 EXPOSE 8080
 
