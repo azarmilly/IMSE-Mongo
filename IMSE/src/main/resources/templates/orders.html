@@ -27,8 +27,27 @@
     </div>
 
     <div class="col-sm-10">
-        <p>Thank you for your purchase!</p>
-        <p th:text="${'Your order id: ' + orderId}">t</p>
+        <br>
+        <a href="?daysBefore=1"><button>last day</button></a>
+        <a href="?daysBefore=7"><button>last week</button></a>
+        <a href="?daysBefore=30"><button>last month</button></a>
+
+        <h4 th:text="${'Last ' + daysBefore + ' days orders'}"></h4>
+
+        <div th:each="order: ${orders}" class="shop-item">
+            <p>
+                <span>Id: </span>
+                <span th:text="${order.orderId}"></span>
+            </p>
+            <p>
+                <span>Price: </span>
+                <span th:text="${order.price}"></span>
+            </p>
+            <p>
+                <span>Date: </span>
+                <span th:text="${order.date}"></span>
+            </p>
+        </div>
     </div>
 
 </div>

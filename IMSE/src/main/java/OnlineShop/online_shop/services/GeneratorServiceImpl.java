@@ -118,6 +118,7 @@ public class GeneratorServiceImpl {
     public void generateOrdersData() {
         Orders orders;
         List<Users> users = userService.getAllUsers();
+        List<Product> products = productService.getAllProducts();
 
         List<String> statusList = new ArrayList<>();
         Date fromDate = new Date(115, 1, 1);
@@ -146,7 +147,13 @@ public class GeneratorServiceImpl {
             Users user = new Users();
             user.setId(ThreadLocalRandom.current().nextInt(idFrom,idTo));
             orders.setUser(user);
-            ordersService.addOrder(orders);
+
+            ShoppingList shoppingList = new ShoppingList();
+            List<Product> prods = new ArrayList<>();
+            prods.add(products.get(0));
+            shoppingList.setProducts(prods);
+            shoppingList.setActive(false);
+            ordersService.addOrders(user, shoppingList);
         }
     }
 

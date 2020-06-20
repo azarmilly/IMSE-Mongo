@@ -41,8 +41,8 @@ public class OrdersServiceImpl implements OrdersService {
     }
 
     @Override
-    public int addOrder(Orders order) {
-        ordersRepository.save(order);
-        return order.getOrderId();
+    public List<Orders> getUserOrders(Users user, int daysBefore) {
+        return ordersRepository.findByDateAfterAndUser(new Date(
+                System.currentTimeMillis() - ((long) daysBefore * 24 * 60 * 60 * 1000)), user);
     }
 }

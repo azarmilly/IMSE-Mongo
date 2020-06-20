@@ -1,5 +1,6 @@
 package OnlineShop.online_shop.Controller;
 
+import OnlineShop.online_shop.model.Orders;
 import OnlineShop.online_shop.model.Product;
 import OnlineShop.online_shop.model.ShoppingList;
 import OnlineShop.online_shop.model.Users;
@@ -81,5 +82,22 @@ public class ShopController {
         model.addAttribute("user", user);
         model.addAttribute("orderId", orderId);
         return "order-complete";
+    }
+
+    @GetMapping(value = "/orders")
+    public String orders(Model model,
+                           Integer daysBefore,
+                           Principal principal){
+        Users user = (Users) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
+
+        if(daysBefore == null){
+            daysBefore = 1;
+        }
+        List<Orders> orders = ordersService.getUserOrders(user, daysBefore);
+
+        model.addAttribute("user", user);
+        model.addAttribute("orders", orders);
+        model.addAttribute("daysBefore", daysBefore);
+        return "orders";
     }
 }
