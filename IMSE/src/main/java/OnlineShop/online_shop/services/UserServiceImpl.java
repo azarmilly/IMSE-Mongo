@@ -102,6 +102,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public ShoppingList getActiveShoppingList(Users user) {
+        if(user.getShoppingList() == null){
+            return null;
+        }
         return user.getShoppingList()
                 .parallelStream()
                 .filter(ShoppingList::isActive)
