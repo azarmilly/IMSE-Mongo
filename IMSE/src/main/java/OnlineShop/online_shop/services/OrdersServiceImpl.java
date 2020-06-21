@@ -27,6 +27,12 @@ public class OrdersServiceImpl implements OrdersService {
     }
 
     @Override
+    public int addOrder(Orders order) {
+        ordersRepository.save(order);
+        return order.getOrderId();
+    }
+
+    @Override
     public int addOrders(Users user, ShoppingList shoppingList) {
         Orders order = new Orders();
         order.setUser(user);

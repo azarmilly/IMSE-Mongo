@@ -148,12 +148,7 @@ public class GeneratorServiceImpl {
             user.setId(ThreadLocalRandom.current().nextInt(idFrom,idTo));
             orders.setUser(user);
 
-            ShoppingList shoppingList = new ShoppingList();
-            List<Product> prods = new ArrayList<>();
-            prods.add(products.get(0));
-            shoppingList.setProducts(prods);
-            shoppingList.setActive(false);
-            ordersService.addOrders(user, shoppingList);
+            ordersService.addOrder(orders);
         }
     }
 

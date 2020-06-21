@@ -11,6 +11,8 @@ public interface OrdersService {
 
     List<Orders> getAllOrders ();
 
+    int addOrder(Orders order);
+
     int addOrders(Users user, ShoppingList orders);
 
     List<Orders> getUserOrders(Users user, int daysBefore);
