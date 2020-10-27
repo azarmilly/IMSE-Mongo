@@ -1,0 +1,27 @@
+version: '3'
+services:
+    mongo:
+        container_name: mongo
+        image: mongo
+        ports:
+            - "27017:27017"
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: azar
+            MONGO_INITDB_ROOT_PASSWORD: 4321
+            MONGO_INITDB_DATABASE: online_shop
+    online_shop:
+        container_name: online_shop
+        image: online_shop:latest
+        build:
+            context: ./
+            dockerfile: Dockerfile
+        ports:
+            - "8080:8080"
+        depends_on:
+            - mongo
+        environment:
+            SPRING_DATASOURCE_USERNAME: azar
+            SPRING_DATASOURCE_PASSWORD: 4321
+            SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/online_shop
+            SPRING_DATA_MONGODB_HOST: mongo
+            command: mvn clean spring-boot:run

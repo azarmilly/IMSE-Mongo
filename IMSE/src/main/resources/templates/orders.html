@@ -1,0 +1,70 @@
+<!DOCTYPE HTML>
+
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Online Shop</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+
+</head>
+<body style="background-color:#F0FFFF;">
+
+<div class="container">
+    <h3 style="color:blue;text-align:center;">Azar & Violeta Online Shop</h3>
+
+    <div class="col-sm-offset-2 col-sm-10">
+        <p th:text="${'Welcome ' + user.firstName + '!'}">t</p>
+    </div>
+
+    <div class="col-sm-10">
+        <a href="/">Home</a>
+        |
+        <a href="/basket">Basket</a>
+        |
+        <a href="/orders">My orders</a>
+    </div>
+
+    <div class="col-sm-10">
+        <br>
+        <a href="?daysBefore=1"><button>last day</button></a>
+        <a href="?daysBefore=7"><button>last week</button></a>
+        <a href="?daysBefore=30"><button>last month</button></a>
+
+        <h4 th:text="${'Last ' + daysBefore + ' days orders'}"></h4>
+
+        <div th:each="order: ${orders}" class="shop-item">
+            <p>
+                <span>Id: </span>
+                <span th:text="${order.id}"></span>
+            </p>
+            <p>
+                <span>Price: </span>
+                <span th:text="${order.price}"></span>
+            </p>
+            <p>
+                <span>Date: </span>
+                <span th:text="${order.date}"></span>
+            </p>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>
+
+<style>
+    .shop-item {
+        height: 200px;
+        width: 200px;
+        padding: 10px;
+        margin: 10px;
+        float: left;
+        border: 1px solid #ccc;
+    }
+
+    .buy-section{
+        text-align: center;
+    }
+</style>
